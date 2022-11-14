@@ -1,8 +1,13 @@
 import express from 'express'
 import path from 'path'
+import bodyParser from 'body-parser'
 const app = express()
 
-// EJS config
+// bodyParser Config
+app.use(bodyParser.urlencoded({ extended: false })) // form
+app.use(bodyParser.json()) // json
+
+// EJS Config
 app.set( "views", path.join( __dirname, "views" ) )
 app.set('view engine', 'ejs')
 
