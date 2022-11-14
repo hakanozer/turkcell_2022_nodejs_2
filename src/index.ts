@@ -13,6 +13,11 @@ app.use('/', [
     homeController
 ])
 
+// admin import controller
+import { loginController } from './controllers/admin/loginController'
+app.use('/admin', [
+  loginController
+])
 
 const port = 8080
 app.listen(port, () => {
