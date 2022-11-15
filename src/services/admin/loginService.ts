@@ -10,3 +10,8 @@ export const save = async (name: string, email: string, password: string)  => {
     await db
     return await adminModel.create({name, email, password})
 }
+
+export const findId = async ( id: string ) => {
+    await db
+    return await adminModel.findById(id)
+}

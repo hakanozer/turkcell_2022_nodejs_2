@@ -2,7 +2,9 @@ import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
 import session from 'express-session'
+import cookieParser from 'cookie-parser'
 import { IAdmin } from './models/IAdmin'
+import { findId } from './services/admin/loginService'
 const app = express()
 
 
@@ -13,6 +15,9 @@ save("Zehra", "zehra@mail.com", "12345").then( item => {
   console.log(item);
 })
 */
+
+// cookie Config
+app.use(cookieParser())
 
 // session Config
 declare module 'express-session' {
@@ -34,8 +39,10 @@ app.use(bodyParser.json()) // json
 app.set( "views", path.join( __dirname, "views" ) )
 app.set('view engine', 'ejs')
 
+
+
 // global filter
-app.use((req, res, next) => {
+app.use( async (req, res, next) => {
   
   const url = req.url
   const urls = ['/admin', '/admin/login']
@@ -46,6 +53,21 @@ app.use((req, res, next) => {
     }
   })
   if (sessionStatus === true) {
+    // cookie control
+    const cookieAdmin = req.cookies.admin
+    if ( cookieAdmin ) {
+      const id = String(cookieAdmin)
+      await findId(id).then(user => {
+        if (user) {
+          req.session.item = {
+            id: user.id,
+            name: user.name!,
+            email: user.email!,
+            password: user.password!
+          }
+        }
+      })
+    }
     const userItem = req.session.item
     if (userItem) {
       next()
@@ -67,10 +89,18 @@ app.use('/', [
 // admin import controller
 import { loginController } from './controllers/admin/loginController'
 import { dashboardController } from './controllers/admin/dashboardController'
+import { productController } from './controllers/admin/productController'
 app.use('/admin', [
   loginController,
-  dashboardController
+  dashboardController,
+  productController
 ])
+
+// 404 not found
+app.use('*', (req, res) => {
+  console.log("404 call");
+  res.render('404')
+})
 
 const port = 8080
 app.listen(port, () => {

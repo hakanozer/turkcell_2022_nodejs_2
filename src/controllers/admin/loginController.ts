@@ -8,17 +8,21 @@ export const loginController = express.Router()
 let errorMessage = ''
 
 loginController.get('/', (req, res) => {
-    res.render('admin/login', {errorMessage})
-    errorMessage = ''
+    if ( req.session.item ) {
+        res.redirect('../admin/dashboard')
+    }else {
+        res.render('admin/login', {errorMessage})
+        errorMessage = ''
+    }
 })
 
 loginController.post('/login', async (req, res) => {
-    const item: ILogin = req.body
-    if (item.email === undefined || item.password === undefined) {
+    const itemLogin: ILogin = req.body
+    if (itemLogin.email === undefined || itemLogin.password === undefined) {
         errorMessage = 'Email or Password Undefined'
         res.redirect('../admin/')
     }else {
-        await login(item.email, item.password).then(item => {
+        await login(itemLogin.email, itemLogin.password).then(item => {
             if (item) {
                 const user:IAdmin = {
                     id: item.id,
@@ -27,6 +31,10 @@ loginController.post('/login', async (req, res) => {
                     password: item.password!
                 }
                 req.session.item = user
+                if ( itemLogin.remember ) {
+                    // cookie create
+                    res.cookie('admin', item.id, {maxAge: 1000 * 60 * 60} )
+                }
                 res.redirect('../admin/dashboard')
             }else {
                 errorMessage = 'Email or Password Error'
