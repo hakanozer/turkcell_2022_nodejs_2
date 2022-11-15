@@ -3,6 +3,13 @@ import path from 'path'
 import bodyParser from 'body-parser'
 const app = express()
 
+import { save } from './services/admin/loginService'
+// db insert
+save("Erkan", "erkan@mail.com", "12345").then( item => {
+  console.log(item);
+})
+
+
 // bodyParser Config
 app.use(bodyParser.urlencoded({ extended: false })) // form
 app.use(bodyParser.json()) // json
