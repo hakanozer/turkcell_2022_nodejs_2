@@ -5,6 +5,7 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import { IAdmin } from './models/IAdmin'
 import { findId } from './services/admin/loginService'
+import { decrypt } from './utils/util'
 const app = express()
 
 
@@ -56,17 +57,23 @@ app.use( async (req, res, next) => {
     // cookie control
     const cookieAdmin = req.cookies.admin
     if ( cookieAdmin ) {
-      const id = String(cookieAdmin)
-      await findId(id).then(user => {
-        if (user) {
-          req.session.item = {
-            id: user.id,
-            name: user.name!,
-            email: user.email!,
-            password: user.password!
+      try {
+        const id = decrypt(String(cookieAdmin))
+        await findId(id).then(user => {
+          if (user) {
+            req.session.item = {
+              id: user.id,
+              name: user.name!,
+              email: user.email!,
+              password: user.password!
+            }
           }
-        }
-      })
+        })
+      } catch (error) {
+        console.log("Cookie Fail");
+        // res.cookie('admin', '', {maxAge: 0} )
+        res.clearCookie('admin')
+      }
     }
     const userItem = req.session.item
     if (userItem) {

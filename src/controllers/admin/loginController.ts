@@ -2,6 +2,7 @@ import express from "express";
 import { IAdmin } from "../../models/IAdmin";
 import { ILogin } from "../../models/loginModel";
 import { login } from "../../services/admin/loginService";
+import { encrypt } from "../../utils/util";
 
 export const loginController = express.Router()
 
@@ -33,7 +34,7 @@ loginController.post('/login', async (req, res) => {
                 req.session.item = user
                 if ( itemLogin.remember ) {
                     // cookie create
-                    res.cookie('admin', item.id, {maxAge: 1000 * 60 * 60} )
+                    res.cookie('admin', encrypt(item.id), {maxAge: 1000 * 60 * 60} )
                 }
                 res.redirect('../admin/dashboard')
             }else {
