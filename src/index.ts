@@ -1,7 +1,10 @@
 import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
+import session from 'express-session'
+import { IAdmin } from './models/IAdmin'
 const app = express()
+
 
 /*
 import { save } from './services/admin/loginService'
@@ -11,6 +14,16 @@ save("Zehra", "zehra@mail.com", "12345").then( item => {
 })
 */
 
+// session Config
+declare module 'express-session' {
+  interface SessionData {
+    item: IAdmin
+  }
+}
+app.use(session({
+  secret: 'key123',
+  resave: false
+}))
 
 // bodyParser Config
 app.use(bodyParser.urlencoded({ extended: false })) // form
@@ -29,8 +42,10 @@ app.use('/', [
 
 // admin import controller
 import { loginController } from './controllers/admin/loginController'
+import { dashboardController } from './controllers/admin/dashboardController'
 app.use('/admin', [
-  loginController
+  loginController,
+  dashboardController
 ])
 
 const port = 8080

@@ -1,4 +1,5 @@
 import express from "express";
+import { IAdmin } from "../../models/IAdmin";
 import { ILogin } from "../../models/loginModel";
 import { login } from "../../services/admin/loginService";
 
@@ -18,7 +19,14 @@ loginController.post('/login', async (req, res) => {
     }else {
         await login(item.email, item.password).then(item => {
             if (item) {
-                console.log(item);
+                const user:IAdmin = {
+                    id: item.id,
+                    name: item.name!,
+                    email: item.email!,
+                    password: item.password!
+                }
+                req.session.item = user
+                res.redirect('../admin/dashboard')
             }else {
                 errorMessage = 'Email or Password Error'
             }
