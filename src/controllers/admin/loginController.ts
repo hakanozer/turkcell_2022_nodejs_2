@@ -11,17 +11,19 @@ loginController.get('/', (req, res) => {
     errorMessage = ''
 })
 
-loginController.post('/login', (req, res) => {
+loginController.post('/login', async (req, res) => {
     const item: ILogin = req.body
     if (item.email === undefined || item.password === undefined) {
         errorMessage = 'Email or Password Undefined'
     }else {
-        const status = login(item.email, item.password)
-        if ( status ) {
-
-        }else {
-            errorMessage = 'Email or Password Error'
-        }
+        await login(item.email, item.password).then(item => {
+            if (item) {
+                console.log(item);
+            }else {
+                errorMessage = 'Email or Password Error'
+            }
+        })
+        
     }
     res.redirect('../admin/')
 })

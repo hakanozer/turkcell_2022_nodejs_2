@@ -3,11 +3,13 @@ import path from 'path'
 import bodyParser from 'body-parser'
 const app = express()
 
+/*
 import { save } from './services/admin/loginService'
 // db insert
-save("Erkan", "erkan@mail.com", "12345").then( item => {
+save("Zehra", "zehra@mail.com", "12345").then( item => {
   console.log(item);
 })
+*/
 
 
 // bodyParser Config
