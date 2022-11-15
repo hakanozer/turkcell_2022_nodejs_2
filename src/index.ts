@@ -22,7 +22,8 @@ declare module 'express-session' {
 }
 app.use(session({
   secret: 'key123',
-  resave: false
+  resave: false,
+  saveUninitialized: true
 }))
 
 // bodyParser Config
@@ -33,6 +34,29 @@ app.use(bodyParser.json()) // json
 app.set( "views", path.join( __dirname, "views" ) )
 app.set('view engine', 'ejs')
 
+// global filter
+app.use((req, res, next) => {
+  
+  const url = req.url
+  const urls = ['/admin', '/admin/login']
+  let sessionStatus = true
+  urls.forEach( urlItem => {
+    if (urlItem === url) {
+      sessionStatus = false
+    }
+  })
+  if (sessionStatus === true) {
+    const userItem = req.session.item
+    if (userItem) {
+      next()
+    }else {
+      res.redirect('../admin')
+    }
+  }else {
+    next()
+  }
+  
+})
 
 // site import controller
 import {homeController}  from './controllers/site/homeController'

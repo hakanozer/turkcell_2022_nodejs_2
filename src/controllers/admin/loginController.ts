@@ -16,6 +16,7 @@ loginController.post('/login', async (req, res) => {
     const item: ILogin = req.body
     if (item.email === undefined || item.password === undefined) {
         errorMessage = 'Email or Password Undefined'
+        res.redirect('../admin/')
     }else {
         await login(item.email, item.password).then(item => {
             if (item) {
@@ -29,9 +30,10 @@ loginController.post('/login', async (req, res) => {
                 res.redirect('../admin/dashboard')
             }else {
                 errorMessage = 'Email or Password Error'
+                res.redirect('../admin/')
             }
         })
         
     }
-    res.redirect('../admin/')
+    
 })
