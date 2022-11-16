@@ -77,6 +77,7 @@ app.use( async (req, res, next) => {
     }
     const userItem = req.session.item
     if (userItem) {
+      res.locals.user = userItem
       next()
     }else {
       res.redirect('../admin')
@@ -105,7 +106,6 @@ app.use('/admin', [
 
 // 404 not found
 app.use('*', (req, res) => {
-  console.log("404 call");
   res.render('404')
 })
 

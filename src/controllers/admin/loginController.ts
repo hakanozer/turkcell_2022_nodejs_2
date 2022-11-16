@@ -46,3 +46,13 @@ loginController.post('/login', async (req, res) => {
     }
     
 })
+
+// logout
+loginController.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (!err) {
+            res.clearCookie('admin')
+            res.redirect('../admin')
+        }
+    })
+})

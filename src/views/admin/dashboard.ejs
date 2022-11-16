@@ -6,7 +6,52 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome Dashboard - <%= user.name %> </h1>
+        <%- include ('../inc/navbar') %> 
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Customer Add</h2>
+                <form method="post" action="../admin/customerAdd">
+                    <div class="mb-3">
+                        <input name="name" placeholder="Name" class="form-control" /> 
+                    </div>
+                    <div class="mb-3">
+                        <input name="email" placeholder="E-Mail" class="form-control" /> 
+                    </div>
+                    <div class="mb-3">
+                        <input name="phone" placeholder="Phone" class="form-control" /> 
+                    </div>
+                    <button class="btn btn-success" type="submit">Send</button>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <h2>Customer List</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">E-Mail</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>Ali Bilmem</td>
+                                <td>ali@mail.com</td>
+                                <td>5556667788</td>
+                                <td>
+                                    <a href="../admin/customerDelete" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
     </div>
 </body>
 </html>
