@@ -7,7 +7,16 @@
 <body>
     <div class="container">
         <%- include ('../inc/navbar') %> 
-        <h1>Welcome Product</h1>
+        <h2>Product List</h2>
+
+        <% if (arr) { %>
+            <div class="row">
+                <% arr.forEach((item, index) => { %>
+                    <%- include('../inc/productItem', {item, index})  %> 
+                <% }) %>
+            </div>
+        <% } %>
+
     </div>
 </body>
 </html>

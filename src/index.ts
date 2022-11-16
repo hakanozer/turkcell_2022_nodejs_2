@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import { IAdmin } from './models/IAdmin'
 import { findId } from './services/admin/loginService'
 import { decrypt } from './utils/util'
+import { Bilgiler } from './models/IProduct'
 const app = express()
 
 
@@ -23,7 +24,8 @@ app.use(cookieParser())
 // session Config
 declare module 'express-session' {
   interface SessionData {
-    item: IAdmin
+    item: IAdmin,
+    productItem: Bilgiler
   }
 }
 app.use(session({
