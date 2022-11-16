@@ -7,6 +7,7 @@ import { IAdmin } from './models/IAdmin'
 import { findId } from './services/admin/loginService'
 import { decrypt } from './utils/util'
 import { Bilgiler } from './models/IProduct'
+import { IRest } from './models/IRest'
 const app = express()
 
 
@@ -48,44 +49,65 @@ app.set('view engine', 'ejs')
 app.use( async (req, res, next) => {
   
   const url = req.url
-  const urls = ['/admin', '/admin/login']
-  let sessionStatus = true
-  urls.forEach( urlItem => {
-    if (urlItem === url) {
-      sessionStatus = false
-    }
-  })
-  if (sessionStatus === true) {
-    // cookie control
-    const cookieAdmin = req.cookies.admin
-    if ( cookieAdmin ) {
-      try {
-        const id = decrypt(String(cookieAdmin))
-        await findId(id).then(user => {
-          if (user) {
-            req.session.item = {
-              id: user.id,
-              name: user.name!,
-              email: user.email!,
-              password: user.password!
-            }
-          }
-        })
-      } catch (error) {
-        console.log("Cookie Fail");
-        // res.cookie('admin', '', {maxAge: 0} )
-        res.clearCookie('admin')
-      }
-    }
-    const userItem = req.session.item
-    if (userItem) {
-      res.locals.user = userItem
+  console.log(url);
+  
+  if ( url.includes('api/v1') ) {
+    if ( url === '/api/v1/login' ) {
       next()
     }else {
-      res.redirect('../admin')
+      const userItem = req.session.item
+      if (userItem) {
+        next()
+      }else {
+        const item: IRest = {
+          status: false,
+          result: undefined,
+          message: "Login Session Fail"
+        }
+        res.status(401).json(item)
+      }
     }
+    
   }else {
-    next()
+    const urls = ['/admin', '/admin/login']
+    let sessionStatus = true
+    urls.forEach( urlItem => {
+      if (urlItem === url) {
+        sessionStatus = false
+      }
+    })
+    if (sessionStatus === true) {
+      // cookie control
+      const cookieAdmin = req.cookies.admin
+      if ( cookieAdmin ) {
+        try {
+          const id = decrypt(String(cookieAdmin))
+          await findId(id).then(user => {
+            if (user) {
+              req.session.item = {
+                id: user.id,
+                name: user.name!,
+                email: user.email!,
+                password: user.password!
+              }
+            }
+          })
+        } catch (error) {
+          console.log("Cookie Fail");
+          // res.cookie('admin', '', {maxAge: 0} )
+          res.clearCookie('admin')
+        }
+      }
+      const userItem = req.session.item
+      if (userItem) {
+        res.locals.user = userItem
+        next()
+      }else {
+        res.redirect('../admin')
+      }
+    }else {
+      next()
+    }
   }
   
 })
@@ -104,6 +126,14 @@ app.use('/admin', [
   loginController,
   dashboardController,
   productController
+])
+
+// import Rest Controller
+import { adminRestcontroller } from './controllers/api/adminRestController'
+import { customerRestcontroller } from './controllers/api/customerRestController'
+app.use('/api/v1', [
+  adminRestcontroller,
+  customerRestcontroller
 ])
 
 // 404 not found
