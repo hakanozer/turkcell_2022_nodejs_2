@@ -27,6 +27,7 @@ const fnc3 = () => {
 
 export const call = () => {
     fnc1().then(f1 => {
+        console.log("f1", f1);
         fnc2().then(f2 => {
             fnc3().then(f3 => {
                 console.log("All Fnc Finish");

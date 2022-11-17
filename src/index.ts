@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
@@ -41,7 +43,8 @@ app.use(cookieParser())
 declare module 'express-session' {
   interface SessionData {
     item: IAdmin,
-    productItem: Bilgiler
+    productItem: Bilgiler,
+    size: number
   }
 }
 app.use(session({
