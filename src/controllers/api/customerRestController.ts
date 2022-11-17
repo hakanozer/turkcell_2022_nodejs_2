@@ -1,6 +1,6 @@
 import express from "express";
 import { IRest } from "../../models/IRest";
-import { customerDelete, customerList, customerSave } from "../../services/admin/customerService";
+import { customerDelete, customerFind, customerList, customerSave } from "../../services/admin/customerService";
 export const customerRestcontroller = express.Router()
 
 // customer save
@@ -48,5 +48,17 @@ customerRestcontroller.delete('/customer/delete', async (req, res) => {
         }
     })
     res.json(item)
+})
 
+// Customer find
+customerRestcontroller.get('/customer/find', async (req, res) => {
+    const q = req.body.q as string
+    const item: IRest = {
+        status: true,
+        result: undefined
+    }
+    await customerFind(q).then(customers => {
+        item.result = customers
+    })
+    res.json(item)
 })

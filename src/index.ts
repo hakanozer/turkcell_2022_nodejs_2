@@ -8,7 +8,22 @@ import { findId } from './services/admin/loginService'
 import { decrypt } from './utils/util'
 import { Bilgiler } from './models/IProduct'
 import { IRest } from './models/IRest'
+import { logger } from './utils/logger'
+import { call } from './utils/userPromise'
 const app = express()
+
+// logger Test
+try {
+  const obj:any = {}
+  //throw new Error("Sum Method Error");
+  obj.sum(500, 40)
+} catch (err:any) {
+  logger.error(err.message)
+  logger.info('Info Logger')
+}
+
+// use Promise
+call()
 
 
 /*
