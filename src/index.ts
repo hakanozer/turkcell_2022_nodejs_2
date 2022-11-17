@@ -46,12 +46,11 @@ app.set('view engine', 'ejs')
 
 
 // global filter
+let globalUrl = ''
 app.use( async (req, res, next) => {
-  
-  const url = req.url
-  console.log(url);
-  
-  if ( url.includes('api/v1') ) {
+  const url = req.url  
+  globalUrl = url
+  if ( url.includes('/api/v1') ) {
     if ( url === '/api/v1/login' ) {
       next()
     }else {
@@ -138,7 +137,15 @@ app.use('/api/v1', [
 
 // 404 not found
 app.use('*', (req, res) => {
-  res.render('404')
+  if (globalUrl.includes('/api/v1')) {
+    const item: IRest = {
+      status: false,
+      result: "404 Not Found"
+    }
+    res.status(404).json(item)
+  }else {
+    res.render('404')
+  }
 })
 
 const port = 8080
