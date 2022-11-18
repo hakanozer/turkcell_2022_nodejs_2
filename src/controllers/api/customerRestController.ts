@@ -9,6 +9,7 @@ customerRestcontroller.post('/customer/save', async (req, res) => {
         status: false,
         result: undefined
     }
+    
     const name = req.body.name as string
     const email = req.body.email as string
     const phone = req.body.phone as string

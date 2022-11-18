@@ -14,7 +14,12 @@ import { IRest } from './models/IRest'
 import { logger } from './utils/logger'
 import { call } from './utils/userPromise'
 import { cache, ECache } from './utils/useCache'
+import { addData, readData } from './utils/useFile'
 const app = express()
+
+// Use File
+addData("Sample Data")
+readData()
 
 // swagger
 import  swaggerDocument from './swagger.json'
