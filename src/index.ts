@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
+import swaggerUi from 'swagger-ui-express'
 import path from 'path'
 import bodyParser from 'body-parser'
 import session from 'express-session'
@@ -14,6 +15,13 @@ import { logger } from './utils/logger'
 import { call } from './utils/userPromise'
 import { cache, ECache } from './utils/useCache'
 const app = express()
+
+// swagger
+import  swaggerDocument from './swagger.json'
+const options = {
+  explorer: true
+};
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 // cache Test
 /*

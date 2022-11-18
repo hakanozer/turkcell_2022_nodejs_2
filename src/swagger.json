@@ -1,0 +1,25 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "",
+      "description": "",
+      "version": "1.0"
+    },
+    "produces": ["application/json"],
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+      "/customer/save": {
+        "post": {
+          "x-swagger-router-controller": "/api/v1",
+          "operationId": "swagTest",
+          "tags": ["/customer/save"],
+          "description": "",
+          "parameters": [
+            {"name": "Name", "type": "string"}
+          ],
+          "responses": {}
+        }
+      }
+    }
+ }
