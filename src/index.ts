@@ -12,7 +12,18 @@ import { Bilgiler } from './models/IProduct'
 import { IRest } from './models/IRest'
 import { logger } from './utils/logger'
 import { call } from './utils/userPromise'
+import { cache, ECache } from './utils/useCache'
 const app = express()
+
+// cache Test
+/*
+const obj = {name: 'Ali', age: 40}
+const cacheStatus = cache.set(ECache.sample, obj)
+if ( cacheStatus ) {
+  console.log('Cache Create');
+}
+*/
+
 
 // logger Test
 try {

@@ -98,3 +98,9 @@
 {"level":"info","message":"Info Logger","service":"your-service-name","timestamp":"2022-11-17 15:36:08"}
 {"level":"error","message":"obj.sum is not a function","service":"your-service-name","timestamp":"2022-11-17 15:40:53"}
 {"level":"info","message":"Info Logger","service":"your-service-name","timestamp":"2022-11-17 15:40:53"}
+{"level":"error","message":"obj.sum is not a function","service":"your-service-name","timestamp":"2022-11-18 09:38:32"}
+{"level":"info","message":"Info Logger","service":"your-service-name","timestamp":"2022-11-18 09:38:32"}
+{"level":"error","message":"obj.sum is not a function","service":"your-service-name","timestamp":"2022-11-18 09:55:07"}
+{"level":"info","message":"Info Logger","service":"your-service-name","timestamp":"2022-11-18 09:55:07"}
+{"level":"error","message":"obj.sum is not a function","service":"your-service-name","timestamp":"2022-11-18 09:57:23"}
+{"level":"info","message":"Info Logger","service":"your-service-name","timestamp":"2022-11-18 09:57:23"}
