@@ -15,7 +15,13 @@ import { logger } from './utils/logger'
 import { call } from './utils/userPromise'
 import { cache, ECache } from './utils/useCache'
 import { addData, readData } from './utils/useFile'
+import fileUpload from 'express-fileupload'
 const app = express()
+
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 // Use File
 addData("Sample Data")
@@ -172,6 +178,7 @@ app.use('/admin', [
 // import Rest Controller
 import { adminRestcontroller } from './controllers/api/adminRestController'
 import { customerRestcontroller } from './controllers/api/customerRestController'
+import { allProduct } from './utils/service'
 app.use('/api/v1', [
   adminRestcontroller,
   customerRestcontroller
@@ -193,4 +200,8 @@ app.use('*', (req, res) => {
 const port = 8080
 app.listen(port, () => {
   console.log('http://localhost:'+port)
+  allProduct().then(items => {
+      const arr = items.data.Products[0].bilgiler
+      cache.set(ECache.allProduct, arr)
+  })
 })

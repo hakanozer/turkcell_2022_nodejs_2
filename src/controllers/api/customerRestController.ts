@@ -1,4 +1,5 @@
 import express from "express";
+import path, { dirname } from "path";
 import { IRest } from "../../models/IRest";
 import { customerDelete, customerFind, customerList, customerSave } from "../../services/admin/customerService";
 export const customerRestcontroller = express.Router()
@@ -62,4 +63,31 @@ customerRestcontroller.get('/customer/find', async (req, res) => {
         item.result = customers
     })
     res.json(item)
+})
+
+
+// avatar upload
+customerRestcontroller.post('/customer/avatar', (req, res) => {
+    const item: IRest = {
+        status: true,
+        result: undefined
+    }
+    try {
+        if (req.files) {
+            const avatar = req.files.avatar as any
+            const newName = Math.floor( Math.random() * 100000) +"_"+ String(avatar.name)
+            avatar.mv('./uploads/' + newName);
+            const path = "http://localhost:8080/api/v1/file?name=" + newName
+            item.result = path
+        }
+    } catch (error:any) {
+        console.log(error.message);
+    }
+    res.json(item)
+})
+
+
+customerRestcontroller.get('/file', (req, res) => {
+    const name = req.query.name as string
+    res.sendFile( '/Users/hakan/Documents/turkcell_2022_nodejs_2/uploads/' + name )
 })
